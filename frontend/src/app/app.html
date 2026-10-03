@@ -1,0 +1,62 @@
+<app-employee-list></app-employee-list>
+<div class="container">
+
+  <div class="card">
+
+    <h1>Employee Management</h1>
+    <p class="subtitle">Add a new employee</p>
+
+    <form [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+
+      <div class="form-group">
+        <label>Employee Name</label>
+        <input
+          type="text"
+          formControlName="EmployeeName"
+          placeholder="Enter employee name"
+        />
+
+        @if (employeeForm.get('EmployeeName')?.touched &&
+             employeeForm.get('EmployeeName')?.invalid) {
+          <small>Employee name is required</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          formControlName="Email"
+          placeholder="Enter email address"
+        />
+
+        @if (employeeForm.get('Email')?.touched &&
+             employeeForm.get('Email')?.invalid) {
+          <small>Please enter a valid email</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input
+          type="text"
+          formControlName="Phone"
+          placeholder="Enter phone number"
+        />
+      </div>
+
+      <button type="submit">
+        Add Employee
+      </button>
+
+    </form>
+
+    @if (message) {
+      <div class="success">
+        {{ message }}
+      </div>
+    }
+
+  </div>
+
+</div>
