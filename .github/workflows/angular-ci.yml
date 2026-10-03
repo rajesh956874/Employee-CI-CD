@@ -3,14 +3,16 @@ name: Angular CI/CD
 on:
   push:
     branches:
-      - feature/feature5
+      - feature/feature5-cd
 
   pull_request:
     branches:
       - main
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -36,4 +38,26 @@ jobs:
         run: npm ci
 
       - name: Build Angular
-        run: npm run build
+        run: ng build
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Angular build
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: frontend/dist/frontend/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
